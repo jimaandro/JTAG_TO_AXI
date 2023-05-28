@@ -7,7 +7,7 @@ _start:
         .option pop
         /* Set SP (i.e stack) to 0x00008000_00080000 */
 
-        li t0, 0x8000008000    # Load the desired value into temporary register t0
+        li t0, 0x8040000000    # Load the desired value into temporary register t0
     	mv sp, t0              # Move the value from t0 to the stack pointer register sp
         j main
 
