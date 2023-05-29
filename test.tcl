@@ -7,7 +7,7 @@ if {[file exists $input_file]} {
 # 	Read the input bit file and
 #	 seperate the commands 
 set input [split [read [open $input_file r]] "\n"]
-set input [lreverse $input]
+
 #	count the lines ( #instructions of input file) and subtract the last line
 set num_lines [expr {[llength $input]}]
 set num_lines_copy $num_lines
@@ -18,7 +18,7 @@ while {$num_lines_copy > 0} {
 
     # Get the subset of lines to process in this iteration
     set input_subset [lrange $input 0 [expr {$lines_to_process - 1}]]
-
+	set input_subset [lreverse $input_subset ]
     # Process the lines in this iteration
     set output [join $input_subset "_"]
 
@@ -31,10 +31,11 @@ while {$num_lines_copy > 0} {
 	#	write these data
 	run_hw_axi [get_hw_axi_txns wr_txnm]
 	delete_hw_axi_txn wr_txnm
-
+puts "Output for iteration: $output"
+puts "jtag_mem for iteration: $jtag_mem"
 	    # Increase jtag_mem
-    set jtag_mem [expr {$jtag_mem + ($lines_to_process * 32)}]
-
+   set increment_hex [format "0x%x" [expr {$num_lines_copy * 4}]]
+    set jtag_mem [format "0x%08x" [expr {($jtag_mem) + $increment_hex}]]  
     set num_lines_copy [expr {$num_lines_copy - $lines_to_process}]
 
 }
@@ -76,16 +77,11 @@ run_hw_axi [get_hw_axi_txns wr_er]
 	delete_hw_axi_txn wr_er
 
 	    # Increase jtag_mem
-    set jtag_mem [expr {$jtag_mem + ($lines_to_process * 32)}]
+    set jtag_mem [expr { $jtag_mem + ($lines_to_process * 32) } ]
 
     set num_lines_copy [expr {$num_lines_copy - $lines_to_process}]
-
 }
-
-
 #	delete all transactions that were created
 delete_hw_axi_txn [get_hw_axi_txns *]
 
-
 }
-

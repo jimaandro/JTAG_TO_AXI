@@ -56,6 +56,9 @@ delete_hw_axi_txn [get_hw_axi_txns *]
 for {set i 0} { $i < $rd_sz } {incr i} {
 set new_arr($i) $arr([expr {$rd_sz -$i -1 }])
 }
+for { set i 0} {$i < $rd_sz} {incr i} {
+	puts "arr($i) = $new_arr($i)"
+}
 #	return the array
 return [array get new_arr]
 }
