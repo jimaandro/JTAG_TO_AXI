@@ -9,7 +9,7 @@ if {[file exists $input_file]} {
 set input [split [read [open $input_file r]] "\n"]
 
 #	count the lines ( #instructions of input file) and subtract the last line
-set num_lines [expr {[llength $input]}]
+set num_lines [expr {[llength $input] - 1}]
 set num_lines_copy $num_lines
 
 while {$num_lines_copy > 0} {
@@ -33,10 +33,13 @@ while {$num_lines_copy > 0} {
 	delete_hw_axi_txn wr_txnm
 puts "Output for iteration: $output"
 puts "jtag_mem for iteration: $jtag_mem"
+puts "num_lines_copy for iteration: $num_lines_copy"
+
 	    # Increase jtag_mem
-   set increment_hex [format "0x%x" [expr {$num_lines_copy * 4}]]
+   set increment_hex [format "0x%x" [expr {$lines_to_process * 4}]]
     set jtag_mem [format "0x%08x" [expr {($jtag_mem) + $increment_hex}]]  
     set num_lines_copy [expr {$num_lines_copy - $lines_to_process}]
+puts "increment_hex for iteration: $increment_hex"
 
 }
 
