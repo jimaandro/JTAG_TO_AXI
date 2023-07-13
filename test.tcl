@@ -63,7 +63,7 @@ run_hw_axi [get_hw_axi_txns wr_txn1]
 
 
 set num_lines_copy $num_lines
-
+set jtag_mem 0x00000000
 while {$num_lines_copy > 0} {
     # Calculate the number of lines to process in this iteration
     set lines_to_process [expr {$num_lines_copy > 256 ? 256 : $num_lines_copy}]
@@ -74,7 +74,7 @@ set era [join [lrepeat $lines_to_process "00000000"] "_"]
 
 create_hw_axi_txn wr_er [get_hw_axis hw_axi_1] -type write -address $jtag_mem -data $era -len $lines_to_process -size 32
 #	write these data
-run_hw_axi [get_hw_axi_txns wr_er]
+ run_hw_axi [get_hw_axi_txns wr_er]
 
 
 	delete_hw_axi_txn wr_er
@@ -84,6 +84,7 @@ run_hw_axi [get_hw_axi_txns wr_er]
 
     set num_lines_copy [expr {$num_lines_copy - $lines_to_process}]
 }
+
 #	delete all transactions that were created
 delete_hw_axi_txn [get_hw_axi_txns *]
 
