@@ -9,6 +9,7 @@ if {[file exists $input_file]} {
 set input [split [read [open $input_file r]] "\n"]
 
 #	count the lines ( #instructions of input file) and subtract the last line
+global num_lines
 set num_lines [expr {[llength $input] - 1}]
 set num_lines_copy $num_lines
 
@@ -60,10 +61,12 @@ create_hw_axi_txn wr_txn3 [get_hw_axis hw_axi_1] -type write -address $address -
 #	Run reset transactions (Reset Ariane)
 run_hw_axi [get_hw_axi_txns wr_txn3]
 run_hw_axi [get_hw_axi_txns wr_txn1]
+}
 
-
+proc delete_ariane {{jtag_mem 0x00000000}} {
+global num_lines
 set num_lines_copy $num_lines
-set jtag_mem 0x00000000
+
 while {$num_lines_copy > 0} {
     # Calculate the number of lines to process in this iteration
     set lines_to_process [expr {$num_lines_copy > 256 ? 256 : $num_lines_copy}]

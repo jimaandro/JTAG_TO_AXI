@@ -304,12 +304,12 @@ Disassembly of section .text:
     800000000448:	00113c23          	sd	ra,24(sp)
     80000000044c:	00813823          	sd	s0,16(sp)
     800000000450:	02010413          	addi	s0,sp,32
-    800000000454:	0001c7b7          	lui	a5,0x1c
-    800000000458:	20078593          	addi	a1,a5,512 # 1c200 <_TEXT_START_-0x7ffffffe3e00>
+    800000000454:	000027b7          	lui	a5,0x2
+    800000000458:	58078593          	addi	a1,a5,1408 # 2580 <_TEXT_START_-0x7fffffffda80>
     80000000045c:	02faf7b7          	lui	a5,0x2faf
     800000000460:	08078513          	addi	a0,a5,128 # 2faf080 <_TEXT_START_-0x7ffffd050f80>
     800000000464:	cadff0ef          	jal	ra,800000000110 <_Z9init_uartjj>
-    800000000468:	00500793          	li	a5,5
+    800000000468:	00100793          	li	a5,1
     80000000046c:	fef42623          	sw	a5,-20(s0)
     800000000470:	fe043023          	sd	zero,-32(s0)
     800000000474:	00000517          	auipc	a0,0x0

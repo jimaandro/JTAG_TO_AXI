@@ -111,12 +111,13 @@ void print_uart_byte(uint8_t byte)
 
 int main()
 {
-    init_uart(50000000, 115200);
-    int a=5;
+    init_uart(50000000, 9600);
+    int a=1;
     long int b=0;
     //print_uart_int(a);
-   // print_uart_addr(b);
-//	print_uart("argegrtjhyyrj\r\n");
+   //print_uart_addr(b);
+   //
+   print_uart("H");
 
     while (1)
     {
