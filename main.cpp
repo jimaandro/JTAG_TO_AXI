@@ -114,10 +114,10 @@ int main()
     init_uart(50000000, 115200);
     int a=1;
     long int b=5;
-    //print_uart_int(a);
-   //print_uart_addr(b);
+ //  print_uart_int(a);
+  print_uart_addr(b);
    //
-   print_uart("0123456789");
+  // print_uart("H");
 
     while (1)
     {
