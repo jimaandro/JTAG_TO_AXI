@@ -18,5 +18,5 @@ sed 's/ //g' inputf > $1
 
 rm inputf
 rm main.bin
-rm main.elf
+ 
 

@@ -1,5 +1,3 @@
-
-
 #include <stdint.h>
 
 #define UART_BASE 0x10000000
@@ -15,7 +13,6 @@
 #define UART_MODEM_STATUS UART_BASE + 24
 #define UART_DLAB_LSB UART_BASE + 0
 #define UART_DLAB_MSB UART_BASE + 4
-
 
 void write_reg_u8(uintptr_t addr, uint8_t value)
 {
@@ -58,8 +55,8 @@ void print_uart(const char *str)
     const char *cur = &str[0];
     while (*cur != '\0')
     {
-        write_serial((uint8_t)*cur);
-        ++cur;
+        write_reg_u8(UART_THR, *cur);
+	++cur;
     }
 }
 
@@ -107,17 +104,48 @@ void print_uart_byte(uint8_t byte)
     write_serial(hex[1]);
 }
 
-
+void print_string_to_uart(const char* str) {
+	int i=0;
+    while (str[i] != '\n') {
+        write_reg_u8(UART_THR, str[i]);
+        i++;
+    }
+}
 
 int main()
 {
     init_uart(50000000, 115200);
-    int a=1;
-    long int b=5;
- //  print_uart_int(a);
-  print_uart_addr(b);
-   //
-  // print_uart("H");
+
+char message = 'H';
+write_reg_u8(UART_THR, message);
+ message = 'E';
+write_reg_u8(UART_THR, message);
+ message = 'L';
+write_reg_u8(UART_THR, message);
+ message = 'L';
+write_reg_u8(UART_THR, message);
+ message = 'O';
+write_reg_u8(UART_THR, message);
+ message = ' ';
+write_reg_u8(UART_THR, message);
+ message = 'F';
+write_reg_u8(UART_THR, message);
+ message = 'A';
+write_reg_u8(UART_THR, message);
+ message = 'B';
+write_reg_u8(UART_THR, message);
+ message = 'I';
+write_reg_u8(UART_THR, message);
+ message = 'E';
+write_reg_u8(UART_THR, message);
+ message = 'N';
+write_reg_u8(UART_THR, message);
+
+
+
+    //long int b=5;
+ // print_uart_addr(b);
+//print_string_to_uart(message);
 
     while (1)
     {
@@ -127,5 +155,5 @@ int main()
 
 void handle_trap(void)
 {
-    // print_uart("trap\r\n");
+     print_uart("trap\r\n");
 }
