@@ -117,29 +117,29 @@ int main()
     init_uart(50000000, 115200);
 
 char message = 'H';
-write_reg_u8(UART_THR, message);
+write_serial(message);
  message = 'E';
-write_reg_u8(UART_THR, message);
+write_serial(message);
  message = 'L';
-write_reg_u8(UART_THR, message);
+write_serial(message);
  message = 'L';
-write_reg_u8(UART_THR, message);
+write_serial(message);
  message = 'O';
-write_reg_u8(UART_THR, message);
+write_serial(message);
  message = ' ';
-write_reg_u8(UART_THR, message);
+write_serial(message);
  message = 'F';
-write_reg_u8(UART_THR, message);
+write_serial(message);
  message = 'A';
-write_reg_u8(UART_THR, message);
+write_serial(message);
  message = 'B';
-write_reg_u8(UART_THR, message);
+write_serial(message);
  message = 'I';
-write_reg_u8(UART_THR, message);
+write_serial(message);
  message = 'E';
-write_reg_u8(UART_THR, message);
+write_serial(message);
  message = 'N';
-write_reg_u8(UART_THR, message);
+write_serial(message);
 
 
 
