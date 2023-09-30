@@ -3,8 +3,8 @@ proc reset_ariane {}  {
 # 	The base memory address for Ariane is 0x0000800000000000
 #	here we create 2 transactions (32 bit each) for writing the base address to Ariane core
 #	wr2 is the MSB, wr1 is the LSB
-create_hw_axi_txn wr1 [get_hw_axis hw_axi_1] -type write -address 0x80002000 -data {00000000}
-create_hw_axi_txn wr2 [get_hw_axis hw_axi_1] -type write -address 0x80002008 -data {00000082}
+create_hw_axi_txn wr1 [get_hw_axis hw_axi_1] -type write -address 0x80002000 -data {80000000}
+create_hw_axi_txn wr2 [get_hw_axis hw_axi_1] -type write -address 0x80002008 -data {00000000}
 #	write base address
 run_hw_axi [get_hw_axi_txns wr1]
 run_hw_axi [get_hw_axi_txns wr2]
