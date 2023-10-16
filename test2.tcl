@@ -1,4 +1,4 @@
-proc write_trnx {input_file {jtag_mem 0x00000000} {bit_sz 32}} {
+proc write_trnx {input_file {jtag_mem 0x40000000} {bit_sz 32}} {
 		# the input_file is the .hex file with all data we want to write. Words are seperated with \n
 		# the jtag_mem is the base address we want to write
 		# the bit_sz is the size of words we will write 
@@ -21,7 +21,7 @@ delete_hw_axi_txn [get_hw_axi_txns *]
 
 }
 
-proc read_trnx {rd_sz {jtag_mem 0x00000000} {bit_sz 32}} {
+proc read_trnx {rd_sz {jtag_mem 0x40000000} {bit_sz 32}} {
 		# the rd_sz is the number of words we want to read
 		# the jtag_mem is the base address we want to read
 		# the bit_sz is the size of words we will read 
@@ -63,7 +63,7 @@ for { set i 0} {$i < $rd_sz} {incr i} {
 return [array get new_arr]
 }
 
-proc example_wr_rd {input_file rd_sz {jtag_mem 0x00000000} {bit_sz 32}} {
+proc example_wr_rd {input_file rd_sz {jtag_mem 0x40000000} {bit_sz 32}} {
 		# the input_file is the .hex file with all data we want to write. Words are seperated with \n
 		# the rd_sz is the number of words we want to read
 		# the jtag_mem is the base address we want to read

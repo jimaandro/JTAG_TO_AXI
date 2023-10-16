@@ -3,7 +3,7 @@ ENTRY(_start)
 
 SECTIONS
 {	  /* 0000800000000000 */
-    ROM_BASE = 0x8200000000; /* ... but actually position independent */
+    ROM_BASE = 0x80000000; /* ... but actually position independent */
 
     . = ROM_BASE;
 

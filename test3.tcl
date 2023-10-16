@@ -43,7 +43,7 @@ delete_hw_axi_txn [get_hw_axi_txns *]
 proc reset_debug {}  {
 
 # 	set the address of debug reset 
-set address 0x40010000 
+set address 0x00010000 
 # 	Create 2 transactions one for reset=1 and one for reset=0
 create_hw_axi_txn wr_txn1 [get_hw_axis hw_axi_1] -type write -address $address -data {00000001}
 create_hw_axi_txn wr_txn3 [get_hw_axis hw_axi_1] -type write -address $address -data {00000000}

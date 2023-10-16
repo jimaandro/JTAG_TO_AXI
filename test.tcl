@@ -1,4 +1,4 @@
-proc run_ariane {input_file {jtag_mem 0x00000000}} {
+proc run_ariane {input_file {jtag_mem 0x40000000}} {
 if {[file exists $input_file]} {
         puts "The file $input_file exists."
 } else {
@@ -47,11 +47,17 @@ puts "increment_hex for iteration: $increment_hex"
 # 	The base memory address for Ariane is 0x0000800000000000
 #	here we create 2 transactions (32 bit each) for writing the base address to Ariane core
 #	wr2 is the MSB, wr1 is the LSB
-create_hw_axi_txn wr1 [get_hw_axis hw_axi_1] -type write -address 0x80002000 -data {00000000}
-create_hw_axi_txn wr2 [get_hw_axis hw_axi_1] -type write -address 0x80002008 -data {00000082}
+create_hw_axi_txn wr1 [get_hw_axis hw_axi_1] -type write -address 0x80002000 -data {80000000}
+create_hw_axi_txn wr2 [get_hw_axis hw_axi_1] -type write -address 0x80002008 -data {00000000}
 #	write base address
 run_hw_axi [get_hw_axi_txns wr1]
 run_hw_axi [get_hw_axi_txns wr2]
+
+set address 0x00010000 
+# 	Create transactions one for reset=1
+create_hw_axi_txn wr_txn4 [get_hw_axis hw_axi_1] -type write -address $address -data {00000000}
+#	Run reset transactions (Reset Debug)
+run_hw_axi [get_hw_axi_txns wr_txn4]
 
 # 	set the address of ariane reset 
 set address 0x80000000 
@@ -61,9 +67,10 @@ create_hw_axi_txn wr_txn3 [get_hw_axis hw_axi_1] -type write -address $address -
 #	Run reset transactions (Reset Ariane)
 run_hw_axi [get_hw_axi_txns wr_txn3]
 run_hw_axi [get_hw_axi_txns wr_txn1]
+
 }
 
-proc delete_ariane {{jtag_mem 0x00000000}} {
+proc delete_ariane {{jtag_mem 0x40000000}} {
 global num_lines
 set num_lines_copy $num_lines
 
