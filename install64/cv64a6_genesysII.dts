@@ -1,0 +1,101 @@
+/dts-v1/;
+
+/ {
+	#address-cells = <0x02>;
+	#size-cells = <0x02>;
+	compatible = "eth,ariane-bare-dev";
+	model = "eth,ariane-bare";
+
+	chosen {
+	//	bootargs = "console=/dev/ttyUSB2,115200 ";
+		stdout-path = "/soc/uart@10000000:115200";
+	};
+
+	cpus {
+		#address-cells = <0x01>;
+		#size-cells = <0x00>;
+		timebase-frequency = <0x17d7840>;
+
+		cpu@0 {
+			clock-frequency = <0x2faf080>;
+			device_type = "cpu";
+			reg = <0x00>;
+			status = "okay";
+			compatible = "eth, ariane", "riscv";
+			riscv,isa = "rv64imafdc";
+			mmu-type = "riscv,sv39";
+			tlb-split;
+
+			interrupt-controller {
+				#interrupt-cells = <0x01>;
+				interrupt-controller;
+				compatible = "riscv,cpu-intc";
+				phandle = <0x01>;
+			};
+		};
+	};
+
+	memory@80000000 {
+		device_type = "memory";
+		reg = <0x0000 0x80000000 0x00 0x40000000>;
+	};
+
+//	reserved-memory {
+//		#address-cells = <0x02>;
+//		#size-cells = <0x02>;
+//		ranges;
+//
+//		dma_pool@8000000000 {
+//			reg = <0x00 0x8000000000 0x00 0x10000000>;
+//			no-map;
+//			compatible = "shared-dma-pool";
+//			linux,phandle = <0x03>;
+//			phandle = <0x03>;
+//		};
+//	};
+
+	soc {
+		#address-cells = <0x02>;
+		#size-cells = <0x02>;
+		compatible = "eth,ariane-bare-soc", "simple-bus";
+		ranges;
+
+		clint@2000000 {
+			compatible = "riscv,clint0";
+			interrupts-extended = <0x01 0x03 0x01 0x07>;
+			reg = <0x00 0x2000000 0x0 0x10000>;
+			reg-names = "control";
+		};
+
+		interrupt-controller@c000000 {
+			compatible = "riscv,plic0";
+			interrupt-controller;
+			#interrupt-cells = <0x01>;
+			interrupts-extended = <0x01 0x0b 0x01 0x09>;
+			reg = <0x00 0xc000000 0x00 0x40000000>;
+			riscv,max-priority = <0x07>;
+			riscv,ndev = <0x03>;
+			phandle = <0x02>;
+		};
+		
+//		debug-controller@0 {
+//    		compatible = "riscv,debug-013";
+//    		interrupts-extended = <0x01 65535>;
+//    		reg = <0x0 0x0 0x0 0x1000>;
+//    		reg-names = "control";
+//	  	};
+
+		uart@10000000 {
+			compatible = "ns16750", "ns16550";
+			reg = <0x00 0x10000000 0x00 0x1000>;
+			clock-frequency = <0x2faf080>;
+			current-speed = <0x1c200>;
+			interrupt-parent = <0x02>;
+			interrupts = <0x01>;
+			reg-shift = <0x02>;
+			reg-io-width = <0x04>;
+		};
+
+
+	};
+};

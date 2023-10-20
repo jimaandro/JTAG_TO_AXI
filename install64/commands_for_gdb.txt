@@ -1,0 +1,5 @@
+target extended-remote localhost:3333
+monitor reset halt
+restore ./Downloads/ThesisPr/Alveo/cva2sdk/cva6-sdk/install64/uImage binary 0xa0000000
+load ./Downloads/ThesisPr/Alveo/cva2sdk/cva6-sdk/install64/fw_payload.elf
+
