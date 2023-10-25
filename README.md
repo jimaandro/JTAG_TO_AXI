@@ -8,13 +8,13 @@ This is NOT a standalone repository, it is part of a bigger private project call
 
 
 #### Features
-- test1.tcl is for testing a C++ program dirrectly to Ariane, through JTAG. you just need to source it in Vivado Tcl command line and then hit 'run_ariane inputf.hex'.
-- test2.tcl is for reading some specific space in memory. After sourcing it in Vivado, type 'read_trnx 3  0x00000000'. This will read 3 32 bit numbers starting from address 0x0.
-- test3.tcl is for just reseting the ariane and the debug module. This is only if you need to run Linux
-- make_hex_file.sh is used by test1.tcl for compiling your 'main.cpp' to hex and then test1 writes it to memory.
+- `test.tcl` is for testing a C++ program dirrectly to Ariane, through JTAG. you just need to source it in Vivado Tcl command line and then hit `run_ariane inputf.hex`.
+- `test2.tcl` is for reading some specific space in memory. After sourcing it in Vivado, type `read_trnx 3  0x00000000`. This will read 3 32 bit numbers starting from address 0x0.
+- `test3.tcl` is for just reseting the ariane and the debug module. This is only if you need to run Linux
+- `make_hex_file.sh` is used by test.tcl for compiling your `main.cpp` to hex and then test1 writes it to memory.
 
 
 
 #### Installation
--- 'git clone https://github.com/jimaandro/JTAG_TO_AXI'
+- 'git clone https://github.com/jimaandro/JTAG_TO_AXI'
 
