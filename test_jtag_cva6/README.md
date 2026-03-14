@@ -1,4 +1,4 @@
-# Ariane Testing
+# Ariane Testing through JTAG
 
 This repo, has been created to bare metal test the Ariane processor of the [CVA6 project](https://github.com/openhwgroup/cva6). It also contains the appropriate [files for installing](https://github.com/jimaandro/JTAG_TO_AXI/tree/main/install64) and testing Linux on Ariane. 
 

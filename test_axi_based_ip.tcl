@@ -23,9 +23,8 @@ delete_hw_axi_txn [get_hw_axi_txns *]
 }
 
 
-proc reset_c2c {}  {
-
-set address 0xd0000800 
+proc reset_slave {address 0xd0000800}  {
+# Here create your reset patern
 # 	Create 2 transactions one for reset=1 and one for reset=0
 create_hw_axi_txn wr_txn1 [get_hw_axis hw_axi_1] -type write -address $address -data {0000000000000000}
 create_hw_axi_txn wr_txn3 [get_hw_axis hw_axi_1] -type write -address $address -data {0000000000030000}
@@ -257,7 +256,7 @@ proc run_test {{burst_size 1} {jtag_mem 0x1C0000000} {input_file "inputf"} {bit_
 
 proc run_test_random_burst_n {N {jtag_mem 0x1C0000000} {input_file "random_hex_64bit.hex"} {bit_sz 64}} {
     set burst_sizes {1 2 4 8 16}
-    # reset_c2c
+    # reset_slave
 	puts "⏳ Waiting 6 seconds..."
 	after 6000
 
@@ -281,3 +280,41 @@ proc run_test_random_burst_n {N {jtag_mem 0x1C0000000} {input_file "random_hex_6
     }
 }
 
+proc run_test_opcode {N {jtag_mem 0x50000000} {file_name "axi_instructions.hex"} {bit_sz 64}} {
+# -----------------------------------------------------------------------------
+# 1. Source the first script
+# -----------------------------------------------------------------------------
+
+source "Opcode_generator.tcl"
+
+# -----------------------------------------------------------------------------
+# 2. Open the output file
+# -----------------------------------------------------------------------------
+set file_id [open $file_name "w"]
+
+puts "Generating opcodes and writing to $file_name..."
+
+# -----------------------------------------------------------------------------
+# 3. Generate operations and write them to the file
+# -----------------------------------------------------------------------------
+
+# Instruction 1: NTT/INTT from Reg to Reg
+set instr_1 [run_operation NTT_INTT MAC_GENERAL INTT LOAD_FROM_REG SAVE_TO_REG R2 0 4 7 1 1 0]
+puts $file_id $instr_1
+
+# # Instruction 2: Standard MAC loading from Memory
+# set instr_2 [run_operation MAC MAC_GENERAL NTT LOAD_FROM_MEM SAVE_TO_MEM R5 0 0 0 0 0 12 12]
+# puts $file_id $instr_2
+
+# # Instruction 3: ModMult chained from previous operation
+# set instr_3 [run_operation AUTO MAC_MODMULT NTT LOAD_FROM_PREVIOUS FORWARD_TO_NEXT R0 0 0 4 8 0 1 1]
+# puts $file_id $instr_3
+
+# -----------------------------------------------------------------------------
+# 4. Close the file
+# -----------------------------------------------------------------------------
+close $file_id
+
+write_single_trnx $N $jtag_mem $file_name $bit_sz
+
+}
