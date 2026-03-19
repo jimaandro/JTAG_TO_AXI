@@ -46,8 +46,11 @@ proc run_operation {base_op mac_subtype ntt_subtype load_type save_type a_reg se
     set val_b_addr_offset [expr {$b_addr_offset}]
     set val_Num_of_loads_A [expr {$Num_of_loads_A}]
     set val_Num_of_loads_B [expr {$Num_of_loads_B}]
+    set val_sel_start [expr {$sel_start}]
+    set val_sel_end [expr {$sel_end}]
 
     # Apply bit masking to ensure values fit in their designated widths
+
     set val_save_type       [expr {$val_save_type       & 0x3}]   ;# 2 bits [1:0]
     set val_load_type       [expr {$val_load_type       & 0x3}]   ;# 2 bits [3:2]
     set val_ntt_subtype     [expr {$val_ntt_subtype     & 0x1}]   ;# 1 bit  [4]
@@ -59,9 +62,14 @@ proc run_operation {base_op mac_subtype ntt_subtype load_type save_type a_reg se
     set val_Num_of_loads_A  [expr {$val_Num_of_loads_A  & 0x1FF}] ;# 9 bits [38:30]
     set val_Num_of_loads_B  [expr {$val_Num_of_loads_B  & 0x1FF}] ;# 9 bits [47:39]
 
+    set val_sel_start       [expr {$val_sel_start       & 0xFF}]   ;# 8 bits [55:48]
+    set val_sel_end         [expr {$val_sel_end         & 0xFF}]   ;# 8 bits [63:56]
+
     # Assemble the 64-bit opcode via bitwise shifts
     # Using wide() ensures Tcl treats the shifts as 64-bit operations
     set opcode [expr {
+        (wide($val_sel_end)         << 56) |
+        (wide($val_sel_start)       << 48) |
         (wide($val_Num_of_loads_B) << 39) |
         (wide($val_Num_of_loads_A) << 30) |
         (wide($val_b_addr_offset)  << 23) |
@@ -82,5 +90,5 @@ proc run_operation {base_op mac_subtype ntt_subtype load_type save_type a_reg se
 
 # --- Example Usage ---
 # run_operation(NTT_INTT, MAC_GENERAL, INTT, LOAD_FROM_REG, SAVE_TO_REG, R2, sel_start, sel_end, a_addr_input_offset, b_addr_input_offset, q_in, Num_of_loads_A, Num_of_loads_B)
-set my_hex [run_operation NTT_INTT MAC_GENERAL INTT LOAD_FROM_REG SAVE_TO_REG R2 0 4 7 1 1 0]
-puts "Generated Opcode: $my_hex"
+# set my_hex [run_operation NTT_INTT MAC_GENERAL INTT LOAD_FROM_REG SAVE_TO_REG R2 1 4 7 1 1 0]
+# puts "Generated Opcode: $my_hex"

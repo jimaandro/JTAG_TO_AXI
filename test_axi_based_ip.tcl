@@ -1,3 +1,4 @@
+source "Opcode_generator.tcl"
 # use 'write_trnx' to call this function with default args
 proc write_trnx {{jtag_mem 0x1C0000000} {input_file "inputf"} {bit_sz 64}} {
 		# the input_file is the .hex file with all data we want to write. Words are seperated with \n
@@ -285,7 +286,7 @@ proc run_test_opcode {N {jtag_mem 0x50000000} {file_name "axi_instructions.hex"}
 # 1. Source the first script
 # -----------------------------------------------------------------------------
 
-source "Opcode_generator.tcl"
+
 
 # -----------------------------------------------------------------------------
 # 2. Open the output file
@@ -297,24 +298,25 @@ puts "Generating opcodes and writing to $file_name..."
 # -----------------------------------------------------------------------------
 # 3. Generate operations and write them to the file
 # -----------------------------------------------------------------------------
-
+# {base_op mac_subtype ntt_subtype load_type save_type a_reg sel_start sel_end a_addr_offset b_addr_offset Num_of_loads_A Num_of_loads_B}
+  
 # Instruction 1: NTT/INTT from Reg to Reg
-set instr_1 [run_operation NTT_INTT MAC_GENERAL INTT LOAD_FROM_REG SAVE_TO_REG R2 0 4 7 1 1 0]
+set instr_1 [run_operation NTT_INTT MAC_GENERAL INTT LOAD_FROM_REG SAVE_TO_REG R2 1 4 127 1 1 0]
 puts $file_id $instr_1
 
 # # Instruction 2: Standard MAC loading from Memory
-# set instr_2 [run_operation MAC MAC_GENERAL NTT LOAD_FROM_MEM SAVE_TO_MEM R5 0 0 0 0 0 12 12]
-# puts $file_id $instr_2
+set instr_2 [run_operation AUTO MAC_GENERAL INTT LOAD_FROM_REG SAVE_TO_REG R10 256 256 0 1 1 0]
+puts $file_id $instr_2
 
 # # Instruction 3: ModMult chained from previous operation
-# set instr_3 [run_operation AUTO MAC_MODMULT NTT LOAD_FROM_PREVIOUS FORWARD_TO_NEXT R0 0 0 4 8 0 1 1]
-# puts $file_id $instr_3
+set instr_3 [run_operation MAC MAC_GENERAL INTT LOAD_FROM_REG SAVE_TO_REG R28 1 8 0 1 4 4]
+puts $file_id $instr_3
 
 # -----------------------------------------------------------------------------
 # 4. Close the file
 # -----------------------------------------------------------------------------
 close $file_id
 
-write_single_trnx $N $jtag_mem $file_name $bit_sz
+# write_single_trnx $N $jtag_mem $file_name $bit_sz
 
 }
